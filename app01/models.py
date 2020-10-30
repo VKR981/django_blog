@@ -24,6 +24,6 @@ class Comment(models.Model):
     comment = models.CharField(max_length=140)
     username = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, null=True, to_field='username', unique=False)
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, null=True, to_field='slug', unique=False)
+    Post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, null=True, to_field='slug', unique=False)
     datetime = models.DateTimeField(auto_now=True)
