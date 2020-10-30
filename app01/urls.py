@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.urls import path, include
 from . import views
-from .views import CourseAPI, CommentAPI, RatingAPI
+from .views import PostAPI, CommentAPI, RatingAPI
 from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register('course', CourseAPI)
+router.register('Post', PostAPI)
 router.register('comment', CommentAPI)
 router.register('rating', RatingAPI)
 

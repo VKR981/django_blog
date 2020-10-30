@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
-from .models import Comment, Course, Rating
+from .models import Comment, Post, Rating
 from django.shortcuts import get_list_or_404, get_object_or_404
-from .serializers import CourseSerializer, CommentSerializer, RatingSerializer
+from .serializers import PostSerializer, CommentSerializer, RatingSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -19,11 +19,11 @@ def index(request):
     return render(request, 'index.html')
 
 
-class CourseAPI(viewsets.ModelViewSet):
+class PostAPI(viewsets.ModelViewSet):
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
     lookup_field = 'slug'
 
     def perform_create(self, serializer):
@@ -67,7 +67,7 @@ class CommentAPI(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['course']
+    filterset_fields = ['Post']
 
     def perform_create(self, serializer):
         serializer.save(username=self.request.user)
@@ -90,7 +90,7 @@ class CommentAPI(viewsets.ModelViewSet):
             serializer = self.get_serializer(
                 instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
-            comments = Comment.objects.filter(course=instance.slug)
+            comments = Comment.objects.filter(Post=instance.slug)
 
             self.perform_update(serializer)
 
